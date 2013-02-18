@@ -8,6 +8,7 @@
 (declare callback process-data parse-data process-message get-username get-user get-username-memo room-ids)
 
 (def use-notify (atom false))
+(def recent-amount 10)
 
 (defn icon-path []
   (.getPath (clojure.java.io/resource "campfire.png")))
@@ -89,7 +90,7 @@
       (->> (map #(get % "id")))))
 
 (defn -main []
-  (-> (send-request (str "/room/" (room) "/recent.json?limit=10"))
+  (-> (send-request (str "/room/" (room) "/recent.json?limit=" recent-amount))
       (get "messages")
       (->> (map process-message))
       doall)
