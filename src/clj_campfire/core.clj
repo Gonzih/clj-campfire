@@ -89,9 +89,9 @@
       (->> (map #(get % "id")))))
 
 (defn -main []
-  (-> (send-request (str "/room/" (room) "/recent.json"))
+  (-> (send-request (str "/room/" (room) "/recent.json?limit=10"))
       (get "messages")
       (->> (map process-message))
       doall)
-  (swap! use-notify true)
+  (reset! use-notify true)
   (start (room)))
