@@ -4,7 +4,7 @@ A Clojure based campfire console client
 
 ## Usage
 
-set env vars TOKEN, DOMAIN and ROOM (room is room id)
+set env vars TOKEN, DOMAIN
 lein run
 
 ## License
