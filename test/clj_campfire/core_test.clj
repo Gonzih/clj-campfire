@@ -47,3 +47,13 @@
                              :auth (auth (token))
                              :timeout -1) => anything :times 1
         (read-line) => " "))
+
+(fact "get-username uses get-user function"
+  (get-username 1) => "purr"
+  (provided
+    (get-user 1) => {"name" "purr"} :times 1))
+
+(fact "get-user uses send-request function"
+  (get-user 1) => {"name" "myname"}
+  (provided
+    (send-request "/users/1.json") => {"user" {"name" "myname"}}))
