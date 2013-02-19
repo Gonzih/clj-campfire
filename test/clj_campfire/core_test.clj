@@ -45,7 +45,8 @@
                              (stream-url 10)
                              anything
                              :auth (auth (token))
-                             :timeout -1) => anything :times 1))
+                             :timeout -1) => anything :times 1
+        (read-line) => " "))
 
 (fact "get-username uses get-user function"
   (get-username 1) => "purr"
