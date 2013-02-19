@@ -66,4 +66,5 @@
 (fact "send-request returns parsed json data"
       (send-request "/rooms.json") => {"rooms" [{"name" "dev"}]}
       (provided
-        (fetch-data "/rooms.json") => {:body "{\"rooms\":[{\"name\":\"dev\"}]}"} :times 1))
+        (fetch-data "/rooms.json")
+        => {:body "{\"rooms\":[{\"name\":\"dev\"}]}"} :times 1))
