@@ -51,9 +51,14 @@
 (fact "get-username uses get-user function"
   (get-username 1) => "purr"
   (provided
-    (get-user 1) => {"name" "purr"} :times 1))
+    (get-user 1) => {"name" "purr"}))
 
 (fact "get-user uses send-request function"
   (get-user 1) => {"name" "myname"}
   (provided
     (send-request "/users/1.json") => {"user" {"name" "myname"}}))
+
+(fact "room function uses room-ids function"
+      (room) => 2
+      (provided
+        (room-ids) => [2 3]))
