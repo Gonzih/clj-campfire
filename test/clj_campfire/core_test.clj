@@ -27,7 +27,7 @@
                 {\"room_id\":5,\"body\":\"yes\"}\r"
       parsed-data [{"room_id" 3 "body" "pur"}
                    {"room_id" 5 "body" "yes"}]]
-  (fact "process-data calls process-message for each message in data"
+  (fact "process-data maps process-message messages in data"
     (process-data raw-data) => anything
     (provided (parse-data raw-data) => parsed-data :times 1
               (process-message
