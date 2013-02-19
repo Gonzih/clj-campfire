@@ -5,7 +5,9 @@ A Clojure based campfire console client
 ## Usage
 
 set env vars TOKEN, DOMAIN
+```
 lein run
+```
 
 ## License
 
