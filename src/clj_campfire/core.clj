@@ -5,7 +5,7 @@
             [clojure.java.shell :as shell]
             [clojure.string]))
 
-(declare callback process-data parse-data process-message get-username get-user get-username-memo room-ids)
+(declare callback process-data parse-data process-message get-username get-user get-username-memo room-ids fetch-data update-vals)
 
 (def use-notify (atom false))
 (def recent-amount 10)
@@ -62,19 +62,22 @@
       (if @use-notify
         (shell/sh "notify-send" username body "-i" (icon-path))))))
 
-(defn update-vals [map vals f]
-  (reduce #(update-in %1 [%2] f) map vals))
-
 (defn send-request [path]
+  (-> (fetch-data path)
+      :body
+      json/parse-string))
+
+(defn fetch-data [path]
   (with-open [client (http/create-client)]
     (-> (http/GET client
                   (api-url (domain) path)
                   :auth (auth (token) false))
         http/await
         (update-vals [:body] deref)
-        :body
-        str
-        json/parse-string)))
+        (update-vals [:body] str))))
+
+(defn update-vals [map vals f]
+  (reduce #(update-in %1 [%2] f) map vals))
 
 (defn get-username [id]
   (-> (get-user id) (get "name")))

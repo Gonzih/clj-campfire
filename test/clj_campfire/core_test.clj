@@ -62,3 +62,8 @@
       (room) => 2
       (provided
         (room-ids) => [2 3]))
+
+(fact "send-request returns parsed json data"
+      (send-request "/rooms.json") => {"rooms" [{"name" "dev"}]}
+      (provided
+        (fetch-data "/rooms.json") => {:body "{\"rooms\":[{\"name\":\"dev\"}]}"} :times 1))
