@@ -1,6 +1,7 @@
 (ns clj-campfire.core-test
   (:require [midje.sweet :refer :all]
-            [clj-campfire.core :refer :all]))
+            [clj-campfire.core :refer :all]
+            [http.async.client :as http]))
 
 (fact (stream-url "13") =>
       "https://streaming.campfirenow.com/room/13/live.json")
@@ -17,7 +18,7 @@
     (:password   (auth stub-token))       => "x"
     (:preemptive (auth stub-token false)) => false))
 
-(fact "callback should pass data to process-data function"
+(fact "callback passes data to process-data function"
   (let [data "some data"]
     (callback "some state" data) => [data :continue]
     (provided (process-data data) => anything :times 1)))
@@ -26,12 +27,23 @@
                 {\"room_id\":5,\"body\":\"yes\"}\r"
       parsed-data [{"room_id" 3 "body" "pur"}
                    {"room_id" 5 "body" "yes"}]]
-  (fact "process-data should call process-message for each message in data"
+  (fact "process-data calls process-message for each message in data"
     (process-data raw-data) => anything
     (provided (parse-data raw-data) => parsed-data :times 1
               (process-message
                 (as-checker #(some #{%} parsed-data)))
               => anything :times 2))
 
-  (fact "parse-data should return collection of parsed messages"
+  (fact "parse-data returns collection of parsed messages"
     (parse-data raw-data) => parsed-data))
+
+(fact "start function creates request stream"
+      (start 10) => anything
+      (provided
+        (http/request-stream anything
+                             :get
+                             (stream-url 10)
+                             anything
+                             :auth (auth (token))
+                             :timeout -1) => anything :times 1
+        (read-line) => " "))
