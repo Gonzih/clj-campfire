@@ -46,7 +46,7 @@
                              anything
                              :auth (auth (token))
                              :timeout -1) => anything :times 1
-        (read-line) => " "))
+        (read-line) => " " :times 1))
 
 (fact "get-username uses get-user function"
   (get-username 1) => "purr"
