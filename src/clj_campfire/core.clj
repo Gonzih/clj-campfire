@@ -7,7 +7,7 @@
 
 (declare callback process-data parse-data process-message get-username get-user get-username-memo room-ids fetch-data update-vals)
 
-(def use-notify (atom false))
+(def !use-notify (atom false))
 (def recent-amount 10)
 
 (defn icon-path []
@@ -59,7 +59,7 @@
     (let [body (data "body")
           username (get-username-memo (data "user_id"))]
       (println (str username ": " body))
-      (if @use-notify
+      (if @!use-notify
         (shell/sh "notify-send" username body "-i" (icon-path))))))
 
 (defn send-request [path]
@@ -97,5 +97,6 @@
       (get "messages")
       (->> (map process-message))
       doall)
-  (reset! use-notify true)
+  (reset! !use-notify true)
+  (shell/sh "notify-send" "Clojure Campire" "Client started" "-i" (icon-path))
   (start (room)))
